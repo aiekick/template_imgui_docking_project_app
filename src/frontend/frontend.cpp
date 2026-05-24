@@ -26,8 +26,11 @@ Frontend::Frontend(IApp &aIApp) : mr_app(aIApp) {
 bool Frontend::init() {
     ImGui::CustomStyle::ResetCustomId();
     m_buildThemes();
+    ImLayout::initSingleton();
     ImLayout::ref().init("Panes", "Default Layout");
+    Console::initSingleton();
     ImLayout::ref().addPane(LayoutPaneInfos(Console::ref(), "Console").setMenu("Console").setDisposalSide("BOTTOM", 0.5f));
+    Messaging::initSingleton();
     Messaging::ref().AddCategory(MESSAGING_CODE_INFOS, "Infos(s)", MESSAGING_LABEL_INFOS, ImVec4(0.0f, 0.8f, 0.0f, 1.0f));
     Messaging::ref().AddCategory(MESSAGING_CODE_WARNINGS, "Warnings(s)", MESSAGING_LABEL_WARNINGS, ImVec4(0.8f, 0.8f, 0.0f, 1.0f));
     Messaging::ref().AddCategory(MESSAGING_CODE_ERRORS, "Errors(s)", MESSAGING_LABEL_ERRORS, ImVec4(0.8f, 0.0f, 0.0f, 1.0f));
@@ -50,7 +53,8 @@ void Frontend::unit() {
 void Frontend::display() {
     ImGui::CustomStyle::ResetCustomId();
     m_rect = ImRect(ImVec2(), ImGui::GetIO().DisplaySize);
-
+    m_actionsSystem.runImmediateActions();
+    m_actionsSystem.executeFirstConditionalAction();
     m_drawMainMenuBar();
     m_drawMainStatusBar();
 

@@ -7,11 +7,11 @@
 class Backend : public ez::xml::Config {
     DISABLE_DESTRUCTORS(Backend)
     IMPLEMENT_SINGLETON(Backend)
+
 private:
     IApp& mr_app;
 
 public:
-    Backend() = default;
     Backend(IApp& aIApp);
     bool init();
     void unit();

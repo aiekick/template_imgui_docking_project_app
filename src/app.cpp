@@ -86,19 +86,19 @@ bool App::init(int argc, char** argv) {
     bool ret = true;
     ret &= m_initGlfw();
     ret &= m_initImgui();
-    LoadConfigFile("config.xml", "app");
     Backend::initSingleton(*this);
-    ret &= Backend::ref().init();
     Frontend::initSingleton(*this);
+    ret &= Backend::ref().init();
     ret &= Frontend::ref().init();
+    LoadConfigFile("config.xml", "app");
     return ret;
 }
 
 void App::unit() {
     SaveConfigFile("config.xml", "app", "config");
     Frontend::ref().unit();
-    Frontend::unitSingleton();
     Backend::ref().unit();
+    Frontend::unitSingleton();
     Backend::unitSingleton();
     m_unitImgui();
     m_unitGlfw();
@@ -136,8 +136,9 @@ void App::appClosingNeeded(const bool& aFlag) {
 }
 
 void App::closeApp() {
-    // will escape the main loop
+#ifndef __EMSCRIPTEN__
     glfwSetWindowShouldClose(mp_mainWindow, 1);
+#endif
 }
 
 void App::setAppTitle(const std::string& aTitle) {

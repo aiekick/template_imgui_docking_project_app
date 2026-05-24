@@ -24,7 +24,6 @@ private:
     IApp& mr_app;
 
 public:
-    Frontend() = default;
     Frontend(IApp& aIApp);
     bool init();
     void unit();

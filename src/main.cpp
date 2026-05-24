@@ -41,6 +41,8 @@ int main(int argc, char** argv) {
 #endif
 #endif
 
+    ez::Log::initSingleton();
+
 	try {
 		App app;
 		if (app.init(argc, argv)) {
@@ -54,6 +56,7 @@ int main(int argc, char** argv) {
 	}
 
 	ez::Log::ref().close();
+    ez::Log::unitSingleton();
 
 #ifdef _MSC_VER
 #ifdef _DEBUG
